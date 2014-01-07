@@ -126,6 +126,7 @@ public class BeemService extends Service {
     private XmppConnectionAdapter mConnection;
     private SharedPreferences mSettings;
     private String mLogin;
+    private String mPassword;
     private String mHost;
     private String mService;
     private int mPort;
@@ -262,6 +263,7 @@ public class BeemService extends Service {
 	}
 	String tmpJid = mSettings.getString(BeemApplication.ACCOUNT_USERNAME_KEY, "").trim();
 	mLogin = StringUtils.parseName(tmpJid);
+	mPassword = mSettings.getString(BeemApplication.ACCOUNT_PASSWORD_KEY, "123");
 	boolean useSystemAccount = mSettings.getBoolean(BeemApplication.USE_SYSTEM_ACCOUNT_KEY, false);
 	mPort = DEFAULT_XMPP_PORT;
 	mService = StringUtils.parseServer(tmpJid);
@@ -325,7 +327,7 @@ public class BeemService extends Service {
     public XmppConnectionAdapter createConnection() {
 	if (mConnection == null) {
 	    initConnectionConfig();
-	    mConnection = new XmppConnectionAdapter(mConnectionConfiguration, mLogin, null, this);
+	    mConnection = new XmppConnectionAdapter(mConnectionConfiguration, mLogin, mPassword, this);
 	}
 	return mConnection;
     }
